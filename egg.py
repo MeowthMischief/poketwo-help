@@ -276,11 +276,14 @@ class Egg(commands.Cog):
         # Get gender emoji
         gender_emoji = self.get_gender_emoji(gender)
 
+        # Prepend "Gigantamax" to pokemon name if it's a Gigantamax hatch
+        display_name = f"Gigantamax {pokemon_name}" if is_gigantamax else pokemon_name
+
         # Format Pokemon name with gender emoji - always include if we have gender info
         if gender_emoji:
-            pokemon_display = f"{pokemon_name} {gender_emoji}"
+            pokemon_display = f"{display_name} {gender_emoji}"
         else:
-            pokemon_display = pokemon_name
+            pokemon_display = display_name
 
         # Debug print to help troubleshoot
         print(f"DEBUG: Creating hatch embed - Pokemon: '{pokemon_name}', Gender: '{gender}', Type: '{embed_type}'")
@@ -498,7 +501,7 @@ class Egg(commands.Cog):
         if is_shiny:
             criteria_met.append("✨ Shiny")
         if is_gigantamax:
-            criteria_met.append("<:gigantamax:1413843021241384960> Gigantamax")
+            criteria_met.append("<:gigantamax:1420708122267226202> Gigantamax")
         if isinstance(iv, (int, float)):
             if iv >= 90:
                 criteria_met.append(f"📈 High IV ({iv}%)")
@@ -514,7 +517,8 @@ class Egg(commands.Cog):
 
             # Format pokemon name with gender for error message
             gender_emoji = self.get_gender_emoji(gender)
-            pokemon_display = f"{pokemon_name} {gender_emoji}" if gender_emoji else pokemon_name
+            display_name = f"Gigantamax {pokemon_name}" if is_gigantamax else pokemon_name
+            pokemon_display = f"{display_name} {gender_emoji}" if gender_emoji else display_name
 
             await ctx.reply(f"❌ This hatch doesn't meet starboard criteria.\n"
                            f"**Pokémon:** {pokemon_display}\n"
@@ -548,7 +552,8 @@ class Egg(commands.Cog):
 
         # Format pokemon name with gender for success message
         gender_emoji = self.get_gender_emoji(gender)
-        pokemon_display = f"{pokemon_name} {gender_emoji}" if gender_emoji else pokemon_name
+        display_name = f"Gigantamax {pokemon_name}" if is_gigantamax else pokemon_name
+        pokemon_display = f"{display_name} {gender_emoji}" if gender_emoji else display_name
 
         await ctx.reply(f"✅ Hatch sent to starboard!\n"
                        f"**Criteria met:** {criteria_text}\n"
